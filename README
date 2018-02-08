@@ -1,0 +1,23 @@
+ AMBAT is developed by:
+
+    Tarun Khanna and Dr. Ian Gould
+
+    Imperial College London, South Kensington Campus,
+    SW7 2AZ, London, U.K.
+    
+    Corresponding email: tarun.khanna@imperial.ac.uk
+
+
+ AMBAT stands for Amber Memnbrane Builder and Analysis Tool
+
+ This software is distributed as two separate scripts and one separate protein insertion script (present in the folder 'source_code'):
+
+    AMBAT_MB.tcl : Membrane Builder
+    AMBAT_AT.tcl : Analysis Tool
+    AMBAR_PI.tcl : Protein insertion code
+
+ Folder "software_requirement" give details about various basic requirements for running the code
+
+ Folder "Intructions" give detailed pictorical representation for running the software
+
+ Manuscript for AMBAT is currently in the latter stages of preparation.
