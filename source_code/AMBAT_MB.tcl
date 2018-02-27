@@ -6163,7 +6163,7 @@ proc mem_builder {} {
 				}
 			} elseif { [lindex $data 12 1] == 1 || [lindex $data 12 1] == 2 || [lindex $data 12 1] == 5} {
 				puts "				##### BOTH LIPID BILAYER AND INSERSION PART OF THE CODE WILL BE EXECUTED #####"
-				puts "				#### DO YOU WANT TO FORM A NON-RANDOM GRID BASED ON SIMPLE == AND != RULES? ####"
+				puts "				#### DO YOU WANT TO FORM A NON-RANDOM GRID BASED ON SIMPLE == AND != RULES? (Y/N) ####"
 				set gridinp [gets stdin]
 				puts ""
 				if { $gridinp == "Y" || $gridinp == "y" } {

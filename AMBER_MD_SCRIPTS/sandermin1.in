@@ -1,0 +1,7 @@
+Stage 1 - minimisation of protein and bilayer
+ &cntrl
+  imin=1, maxcyc=40000, ncyc=10000,
+ cut=12.,ntb=1,
+  ntpr=500,
+ /
+

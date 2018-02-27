@@ -1,0 +1,42 @@
+Input PDB:
+
+1. Individual Lipids 
+
+In principle, the code can work with any PDB file in a specific PDB file format : 
+
+(HETATM) (ATOM NUM) (ATOM NAME)  (RES NAME)  (CHAIN ID) (RES NUM) (X COORD) (Y COORD) (Z COORD) (OCCUPANCY) (TEMP FACTOR) (ELEM NAME) 
+
+NOTE: A quick way to add these columns is by opening the PDB in softwares like Chimera and then saving it.
+
+Any lipid PDB with the above format should work fine with the code.  
+
+The termination of the file is by "END" 
+
+(Another piece of code is being tested to allow any PDB format, to be included in the next version...)
+
+Lipid 14/16 division of some of the inbuild lipids:H/T1/T2
+
+POPC = PC/PA/OL
+DOPC = PC/OL/OL
+POPS = PS/PA/OL
+POPE = PE/PA/OL
+DOPE = PE/OL/OL
+DPPC = PC/PA/PA
+DLPC = PC/LA/LA
+DMPC = PC/MY/MY
+POPG = PG/PA/OL
+CHOLESTEROL = CHL/CHL/CHL
+
+
+2. Proteins and small molecule PDB's
+
+Protein PDB need to be edited before feeding into the code: Either the ones downloaded from RCSB or OPM database
+
+Firstly, remove the REMARKS section of the PDB. 
+
+The rest of the file format is same as the lipid PDB, which in turn is the format of the most of the PDB'S in protein databank. 
+
+Just change "HETATM" to "ATOM  " (ATOM followed by 2 spaces) in the PDB, this is a simple search and replace job. 
+NOTE: The code will work fine without this as well but if the (ATOM NUM) exceeds 9999 than the (HETATM) and (ATOM NUM) string has no gap and TCL reads them as 1 list element, the code then do not take this element to check for any overlaps. 
+
+

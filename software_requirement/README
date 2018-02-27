@@ -1,0 +1,10 @@
+THIS REPOSITORY CONTAINS ALL THE TCL EXTENSION/LIBRARIES NEEDED TO BE INSTALLED TO RUN AMBAT
+
+INSTALLATION DIRECTION
+
+- Install the standard tcl shell (tested with tclsh version 8.5/8.6) (should be available from the standard linux repositories like yum)
+
+- Install tcl math library for mathematical operations
+	- Untar Tcllib-1.16.tar.gz
+	- In the untar directory just run ‘tclsh installer.tcl’ to install the tcl libraries.
+
