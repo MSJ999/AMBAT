@@ -14,7 +14,7 @@ The termination of the file is by "END"
 
 (Another piece of code is being tested to allow any PDB format, to be included in the next version...)
 
-Lipid 14/16 division of some of the inbuild lipids:H/T1/T2
+Lipid 14/16 division of some of the inbuild lipids:Head/Tail/Tail
 
 POPC = PC/PA/OL
 DOPC = PC/OL/OL
