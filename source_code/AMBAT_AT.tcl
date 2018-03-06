@@ -327,7 +327,7 @@ proc execution {} {
 	puts "				#### DETERMING THE GEOMETRIC CENTRE OF THE RESIDUES $start_res to $end_res AND THE AVERAGE POSITION OF P31'S ON THE UPPER AND THE LOWER LEAFLET ####"
 	puts ""
 	
-	set gc [open "geometric_centre" "w"]
+	set gc [open "geometric_centre.txt" "w"]
 
 	for {set i $start_frame} {$i < $end_frame} {incr i $step} {
 
@@ -561,7 +561,8 @@ proc execution {} {
 		set zcom [expr { $avg_bz / 2.0 }]
 	}
 
-	puts $gc "$xcom	$ycom	$zcom $zula $zlla"
+	puts $gc "#xcoord_centre	ycoord_centre	zcoord_centre	avg_z_lower_leaflet	avg_z_upper_leaflet"
+	puts $gc "$xcom	$ycom	$zcom	$zula	$zlla"
 	close $gc
 
 	if { $avg_bx < $avg_by } {
@@ -609,7 +610,8 @@ proc execution {} {
 			}
 		}
 
-		set th [open "bilayer_thickness" "w"]
+		set th [open "bilayer_thickness.txt" "w"]
+		puts $th "#radius	theta	bilayer_thickness	SD_bilayer_thickness"	
 
 		puts ""
 		puts ""
@@ -777,7 +779,8 @@ proc execution {} {
 		close $tes
 
 		set nmesh $j
-		set h [open "mesh_area" "w"]
+		set h [open "mesh_area.txt" "w"]
+		puts $h "#radius	theta	apl_UL	SD_apl_UL	apl_LL	SD_apl_ll	num_lipid_UL	SD_num_lipids_UL	num_lipid_LL	SD_num_lipids_LL	Avg_APL	SD_Avg_APL"
 		set rr(-1) [expr { $sstep - $rstep }]
 		set pi 3.14
 		for {set j 0} {$j < $nmesh} {incr j} {
@@ -869,12 +872,34 @@ proc execution {} {
 				set sd_nlul [format "%.2f" $sd_nlul]
 				set sd_nlll [format "%.2f" $sd_nlll]
 
-				puts $h "$rr($j)	$the($j,$ij)	$apl_ul	$sd1	$apl_ll	$sd2	$nrul($j,$ij)  $sd_nlul	 $nrll($j,$ij)	$sd_nlll	$avg_apl	$sd"
-				puts $th "$rr($j)	$the($j,$ij)	$blt($j,$ij)	$sd3"
+				if { $sd1 < 30.0 && $sd2 < 30.0 } {
+					if { $apl_ul > 0.0 && $apl_ll > 0.0 } {
+						puts $h "$rr($j)	$the($j,$ij)	$apl_ul	$sd1	$apl_ll	$sd2	$nrul($j,$ij)  $sd_nlul	 $nrll($j,$ij)	$sd_nlll	$avg_apl	$sd"
+					} elseif { $apl_ul <  0.0 && $apl_ll > 0.0 } {
+						puts $h "$rr($j)	$the($j,$ij)	-1	-1	$apl_ll	$sd2	-1	-1	$nrll($j,$ij)  $sd_nlll	-1	-1	"
+					} elseif { $apl_ul > 0.0 && $apl_ll < 0.0 } {
+						puts $h "$rr($j)	$the($j,$ij)	$apl_ul	$sd1	-1	-1	$nrul($j,$ij)  $sd_nlul	-1	-1	-1	-1	"
+					} elseif { $apl_ul < 0.0 && $apl_ll < 0.0 } {
+						puts $h "$rr($j)	$the($j,$ij)	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	"
+					}
+				} elseif { $sd1 < 30.0 && $sd2 > 30.0 } {
+					puts $h "$rr($j)	$the($j,$ij)	$apl_ul	$sd1	-1	-1	$nrul($j,$ij)  $sd_nlul	-1	-1	-1	-1	"
+				} elseif { $sd1 > 30.0 && $sd2 < 30.0 } {
+					puts $h "$rr($j)	$the($j,$ij)	-1	-1	$apl_ll	$sd2	-1	-1	$nrll($j,$ij)  $sd_nlll	-1	-1	"
+				} elseif { $sd1 > 30.0 && $sd2 > 30.0 } {
+					puts $h "$rr($j)	$the($j,$ij)	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	"
+				}
+	
+				if { $sd3 < 15.0 && $blt($j,$ij) != 0.00 } {
+					puts $th "$rr($j)	$the($j,$ij)	$blt($j,$ij)	$sd3"
+				} else {
+					puts $th "$rr($j)	$the($j,$ij)	-1	-1"
+				}
 			}
 		}
 		close $h
 		close $th
+		file delete test
 
 		# FOR A VIDEO
 
@@ -1166,6 +1191,7 @@ proc execution {} {
 		set nmesh $j
 		for {set i 0} {$i < $ndlt} {incr i} {
 			set h [open "3D_lipid_profile_$i.txt" "w"]
+			puts $h "#r	theta	lipids_UL	SD_lipids_UL	lipids_LL	SD_lipids_LL"
 			puts $h "# $lt($i)"
 			for {set j 0} {$j < $nmesh} {incr j} {
 				for {set ij 0} {$ij < $ntstep} {incr ij} {
@@ -1193,8 +1219,18 @@ proc execution {} {
 					set sd_nlll [format "%.2f" $sd_nlll]
 
 					set normfactor [expr { (($rr($j) * $rr($j)) - (($rr($j)-$rstep)*($rr($j)-$rstep))) / 1000.0 }]
+			
+					set var1 [expr { $nltul($i,$j,$ij) / $normfactor  }]
+					set var1 [format "%.2f" $var1]
+					set var1c [expr { $sd_nlul / $normfactor }]
+					set var1c [format "%.2f" $var1c]
+		
+					set var2 [expr { $nltll($i,$j,$ij) / $normfactor }]
+					set var2 [format "%.2f" $var2]
+					set var2c [expr { $sd_nlll / $normfactor }]
+					set var2c [format "%.2f" $var2c]
 
-					puts $h "$rr($j)	$the($j,$ij)	[expr { $nltul($i,$j,$ij) / $normfactor  }]	 [expr { $sd_nlul / $normfactor }]		[expr { $nltll($i,$j,$ij) / $normfactor }]	[expr { $sd_nlll / $normfactor }]"
+					puts $h "$rr($j)	$the($j,$ij)	$var1	$var1c	$var2	$var2c"
 				}
 			}
 			close $h
@@ -1638,7 +1674,9 @@ proc curvature { crd prmtop xcom ycom zcom avg_bx avg_by start_frame end_frame s
 
 	# THIS PROCEDURE DETERMINES THE LOCAL CURVATURE OF THE UNDERLYING LIPID BIILAYER CENTERED AROUND THE GEOMETRIC CENTRE OF THE PROTEIN
 
-	set f1 [open "local_curvature" "w"]
+	set f1 [open "local_curvature.txt" "w"]
+
+	puts $f1 "#radius	theta	curvature_UL	curvature_LL"
 
 	set bln [list 0 0 1]
 	
@@ -2055,7 +2093,7 @@ proc curvature { crd prmtop xcom ycom zcom avg_bx avg_by start_frame end_frame s
 			} else {
 				set anglell($r,$theta) "-"
 			}
-			puts $f1 "$r $theta $angleul($r,$theta) $anglell($r,$theta)"
+			puts $f1 "$r	$theta	$angleul($r,$theta)	$anglell($r,$theta)"
 		}
 	}
 	close $f1
@@ -2085,8 +2123,11 @@ proc flux {prmtop crd ll ul start end step ionn name} {
 
 	# FOLLOWING THE TRAJECTORY OF ALL THE WATER MOLECULES BETWEEN THE ul AND ll
 
-	set w [open "$name" "w"]
-	set w1 [open "$name.ent.txt" "w"]
+	set w [open "$name.txt" "w"]
+	set w1 [open "$name-ent.txt" "w"]
+	
+	puts $w "#Frame number_of_water/ions"
+	puts $w1 "#Frame number_of_water/ions"
 
 	set nframes [expr { ($end - $start) / $step }]
 
@@ -2234,17 +2275,18 @@ proc flux2 { ul ll name } {
 
 	# CALCULATING THE NUMBER OF WATER LEAVING THE AREA
 
-	set f [open "$name" "r"]
+	set f [open "$name.txt" "r"]
 	set data [read $f]
 	close $f
 
-	set g [open "$name.ent.txt" "r"]
+	set g [open "$name-ent.txt" "r"]
 	set data1 [read $g]
 	close $g
 
-	set h [open "$name.lea.txt" "w"]
+	set h [open "$name-lea.txt" "w"]
+	puts $h "#Frame number_of_water/ions"
 
-	set k 0
+	set k 2
 
 	set nwato 0
 
@@ -2429,8 +2471,9 @@ proc protein_profile_1D { inp dir} {
 		set dir 2
 	}
 	puts "						(x,y,z) = (0,1,2) "
-	set f1 [open "dir1" "w"]
-	puts $f1 "# dir $dir"
+
+	set f1 [open "protein_distribution.txt" "w"]
+	puts $f1 "#Z	X	Y"
 	
 	set f [open "$inp" "r"]
 	set data1 [read $f]
@@ -2438,9 +2481,11 @@ proc protein_profile_1D { inp dir} {
 	
 	set step 1.0
 
-	set f2 [open "amino_acid_dis" "w"]
+	set f2 [open "amino_acid_dis.txt" "w"]
+	puts $f2 "#Z	VAL	LEU	ILE	MET	PRO	PHE	ARG	LYS	ASP	ASN	GLU	GLN	SER	THR	HIS/HIE/HID	TYR	TRP	GLY	ALA	CYS	"
 	
-	set f3 [open "ac_nature" "w"]
+	set f3 [open "amino_acid_group_dis.txt" "w"]
+	puts $f3 "#Z	gp1	gp2	gp3	gp4	gp5"
 
 	set f4 [open "res_num" "w"]
 
@@ -2687,11 +2732,17 @@ proc protein_profile_1D { inp dir} {
 			}
 			incr k
 		}
-	puts $f1 " $ij [expr { $maxx - $minx }] [expr { $maxy - $miny }] [expr { $maxz - $minz }]"
+		set var1 [expr { $maxx - $minx }]
+		set var1 [format "%.2f" $var1]
 
-	puts $f2 " [format %.3f $ij] $ac(0) $ac(1) $ac(2) $ac(3) $ac(4) $ac(5) $ac(6) $ac(7) $ac(8) $ac(9) $ac(10) $ac(11) $ac(12) $ac(13) $ac(14) $ac(15) $ac(16) $ac(17) $ac(18) $ac(19)"
+		set var2 [expr { $maxy - $miny }]
+		set var2 [format "%.2f" $var2]
 
-	puts $f3 " [format %.3f $ij] $gp(0) $gp(1) $gp(2) $gp(3) $gp(4)"
+		puts $f1 " $ij	$var1	$var2"
+
+		puts $f2 " [format %.3f $ij]	$ac(0)	$ac(1)	$ac(2)	$ac(3)	$ac(4)	$ac(5)	$ac(6)	$ac(7)	$ac(8)	$ac(9)	$ac(10)	$ac(11)	$ac(12)	$ac(13)	$ac(14)	$ac(15)	$ac(16)	$ac(17)	$ac(18)	$ac(19)"
+
+		puts $f3 " [format %.3f $ij]	$gp(0)	$gp(1)	$gp(2)	$gp(3)	$gp(4)"
 	}
 	close $f1
 	close $f2
@@ -2879,8 +2930,8 @@ proc protein_profile { inp dir} {
 		set dir 2
 	}
 	puts "						(x,y,z) = (0,1,2) "
-	set f1 [open "dir1" "w"]
-	puts $f1 "# dir $dir"
+	set f1 [open "protein_distribution.txt" "w"]
+	puts $f1 "#Z X	Y"
 	
 	set f [open "$inp" "r"]
 	set data1 [read $f]
@@ -3054,7 +3105,14 @@ proc protein_profile { inp dir} {
 			}
 			incr k
 		}
-	puts $f1 " $ij [expr { $maxx - $minx }] [expr { $maxy - $miny }] [expr { $maxz - $minz }]"
+
+		set var1 [expr { $maxx - $minx }]
+		set var1 [format "%.2f" $var1]
+
+		set var2 [expr { $maxy - $miny }]
+		set var2 [format "%.2f" $var2]
+
+		puts $f1 " $ij	$var1	$var2"
 	}
 	close $f1
 }
@@ -3116,7 +3174,8 @@ proc pp {prmtop crd xori yori zori start_frame end_frame step start_res end_res 
 	set satn(3) " "
 	set satn(4) " "
 
-	set f3 [open "ac_nature_3D" "w"]
+	set f3 [open "amino_acid_group_dis_3D.txt" "w"]
+	puts $f3 "#R theta	z	gp1	sdgp1	gp2	sdgp2	gp3	sdgp3	gp4	sdgp4	gp5	sdgp5"
 	
 	# AMINO ACID VARIABLES
 	puts "				#### DEFINING THE VARIABLES #####"
@@ -3495,6 +3554,8 @@ proc pp {prmtop crd xori yori zori start_frame end_frame step start_res end_res 
 				set gp4sd [expr { $gp4sd / $nframe }]
 				set gp4sd [expr { sqrt($gp4sd) }]
 
+				set normfactor [expr { (($r * $r) - (($r-$rstep)*($r-$rstep))) / 100.0 }]
+
 				set gp(0,$m,$n,$o) [format "%.2f" $gp(0,$m,$n,$o)]
 				set gp0sd [format "%.2f" $gp0sd]
 				set gp(1,$m,$n,$o) [format "%.2f" $gp(1,$m,$n,$o)]
@@ -3505,10 +3566,35 @@ proc pp {prmtop crd xori yori zori start_frame end_frame step start_res end_res 
 				set gp3sd [format "%.2f" $gp3sd]
 				set gp(4,$m,$n,$o) [format "%.2f" $gp(4,$m,$n,$o)]
 				set gp4sd [format "%.2f" $gp4sd]
-			
-				set normfactor [expr { (($r * $r) - (($r-$rstep)*($r-$rstep))) / 100.0 }]
+
+				set var1 [expr { $gp(0,$m,$n,$o) / $normfactor }]
+				set var1 [format "%.2f" $var1]
+				set var1c [expr { $gp0sd / $normfactor }]
+				set var1c [format "%.2f" $var1c]
+
+				set var2 [expr { $gp(1,$m,$n,$o) / $normfactor }]
+				set var2 [format "%.2f" $var2]
+				set var2c [expr { $gp1sd / $normfactor }]
+				set var2c [format "%.2f" $var2c]
+
+				set var3 [expr { $gp(2,$m,$n,$o) / $normfactor }]
+				set var3 [format "%.2f" $var3]
+				set var3c [expr { $gp2sd / $normfactor }]
+				set var3c [format "%.2f" $var3c]
+
+				set var4 [expr { $gp(3,$m,$n,$o) / $normfactor }]
+				set var4 [format "%.2f" $var4]
+				set var4c [expr { $gp3sd / $normfactor }]
+				set var4c [format "%.2f" $var4c]
+
+				set var5 [expr { $gp(4,$m,$n,$o) / $normfactor }]
+				set var5 [format "%.2f" $var5]
+				set var5c [expr { $gp4sd / $normfactor }]
+				set var5c [format "%.2f" $var5c]
+
+				set zd1 [format "%.3f" $zd]
 				
-				puts $f3 "$r	$theta	$zd	[expr { $gp(0,$m,$n,$o) / $normfactor }]	[expr { $gp0sd / $normfactor }]	[expr { $gp(1,$m,$n,$o) / $normfactor }]	[expr { $gp1sd / $normfactor }]	[expr { $gp(2,$m,$n,$o) / $normfactor }]	[expr { $gp2sd / $normfactor }]	[expr { $gp(3,$m,$n,$o) / $normfactor }]	[expr { $gp3sd / $normfactor }]	[expr { $gp(4,$m,$n,$o) / $normfactor }]	[expr { $gp4sd / $normfactor }]"
+				puts $f3 "$r	$theta	$zd1	$var1	$var1c	$var2	$var2c	$var3	$var3c	$var4	$var4c	$var5	$var5c"
 				incr n
 			}
 			incr m
@@ -3587,11 +3673,13 @@ proc average {sstep estep rstep thestep} {
 
 	# TO AVERAGE OVER THE TOTAL NUMBER OF AMINO ACID ALONG THE BILAYER THICKNESS
 
-	set f [open "ac_nature_3D" "r"]
+	set f [open "amino_acid_group_dis_3D.txt" "r"]
 	set data [read $f]
 	close $f
 
-	set g [open "ac_nature_3D_avg" "w"]
+	set g [open "amino_acid_group_dis_3D_avg.txt" "w"]
+
+	puts $g "#r	theta	number_AC	SD_number_AC"
 
 	set rrstep $estep
 
@@ -3600,8 +3688,8 @@ proc average {sstep estep rstep thestep} {
 		set st($i) 0.0
 	}
 	set i 0
-	set k 0
-	set zc [lindex $data 2]
+	set k 13
+	set zc [lindex $data 15]
 	while { $k < [llength $data] } {
 		set z [lindex $data [expr { $k + 2 }]]
 		if { $z == $zc } {
@@ -3630,7 +3718,7 @@ proc average {sstep estep rstep thestep} {
 		for {set the $thestep} {$the <= 360.0} {set the [expr { $the + $thestep }]} {
 			set t($i) [format "%.0f" $t($i)]
 			set st($i) [format "%.0f" $st($i)]
-			puts $g "$r $the $t($i) $st($i)"
+			puts $g "$r	$the	$t($i)	$st($i)"
 			incr i
 		}
 	}
@@ -4057,6 +4145,11 @@ proc wat_prof {prmtop crd xcom ycom zcom start_frame end_frame step sstep tsteps
 proc file_delete {} {
 	file delete dummy
 	file delete res_num
+	file delete test
+	file delete center_of_mass
+	file delete output.pdb
+	file delete output.rst
+	file delete input
 }
 
 execution
