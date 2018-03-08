@@ -15,7 +15,7 @@
 
 # CODE SYNTAX
 
-# python PLOTS_AMBAT_AT.py $filename $column(of property) $3D(optional for 3D protein profiles)
+# python PLOTS_AMBAT_AT.py $filename $column(of property) 3D(optional for 3D protein profiles)
 
 # •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 
@@ -301,7 +301,7 @@ def heat_map_3D():
 
 if len(sys.argv) < 3:
 	print("ERROR IN INPUT")
-	print("SYNTAX :: python PLOTS_AMBAT_AT.py $filename $column(of property) $3D(optional for 3D protein profiles)")
+	print("SYNTAX :: python PLOTS_AMBAT_AT.py $filename $column(of property) 3D(optional for 3D protein profiles)")
 	quit()
 
 try:
