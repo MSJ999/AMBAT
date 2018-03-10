@@ -1192,7 +1192,7 @@ proc execution {} {
 		for {set i 0} {$i < $ndlt} {incr i} {
 			set h [open "3D_lipid_profile_$i.txt" "w"]
 			puts $h "#r	theta	lipids_UL	SD_lipids_UL	lipids_LL	SD_lipids_LL"
-			puts $h "# $lt($i)"
+			#puts $h "# $lt($i)"
 			for {set j 0} {$j < $nmesh} {incr j} {
 				for {set ij 0} {$ij < $ntstep} {incr ij} {
 					set nltul($i,$j,$ij) [expr { $nltul($i,$j,$ij) / $nframe }]
