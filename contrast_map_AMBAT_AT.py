@@ -112,8 +112,8 @@ def heat_map():
 	fig, axs = plt.subplots(1, subplot_kw=dict(projection='polar'))
 	p2 = axs.contourf(yvalue,xvalue, values, cmap='RdBu')
 	cbar = plt.colorbar(p2, ax=axs)
-	label_cb = sys.argv[1].split(".")
-	cbar.ax.set_ylabel('{}'.format(label_cb[0]), fontsize=10, fontweight='bold')
+	label_cb = sys.argv[1].strip(".txt")
+	cbar.ax.set_ylabel('{}'.format(label_cb), fontsize=10, fontweight='bold')
 	#plt.ylim(10,30)
 	plt.show()
 
@@ -291,8 +291,8 @@ def heat_map_3D():
 
 	
 	cbar = plt.colorbar(p2, ax=axs)
-	label_cb = sys.argv[1].split(".")
-	cbar.ax.set_ylabel('{}'.format(label_cb[0]), fontsize=10, fontweight='bold')
+	label_cb = sys.argv[1].strip(".txt")
+	cbar.ax.set_ylabel('{}'.format(label_cb), fontsize=10, fontweight='bold')
 	#plt.ylim(10,30)
 	plt.show()
 

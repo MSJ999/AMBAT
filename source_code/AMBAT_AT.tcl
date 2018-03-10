@@ -908,6 +908,7 @@ proc execution {} {
 		set vi 0
 		for {set i $start_frame} {$i < $end_frame} {incr i $step} {
 			set v [open "$vi.txt" "w"]
+			puts $v "#radius	theta	bilayer_thickness"	
 			for {set j 0} {$j < $nmesh} {incr j} {
 				for {set ij 1} {$ij <= $ntstep} {incr ij} {
 					puts $v "$rr($j)	$the($j,$ij)	$bltsd($i,$j,$ij)"
@@ -1245,6 +1246,7 @@ proc execution {} {
 			set vi 0
 			for {set fr $start_frame} {$fr < $end_frame} {incr fr $step} {
 				set v [open "$i.$vi.txt" "w"]
+				puts $v "#r	theta	lipids_UL	lipids_LL"
 				for {set j 0} {$j < $nmesh} {incr j} {
 					for {set ij 0} {$ij < $ntstep} {incr ij} {
 						set normfactor [expr { (($rr($j) * $rr($j)) - (($rr($j)-$rstep)*($rr($j)-$rstep))) / 1000.0 }]
@@ -1681,7 +1683,7 @@ proc curvature { crd prmtop xcom ycom zcom avg_bx avg_by start_frame end_frame s
 	set bln [list 0 0 1]
 	
 	for { set r $sstep } { $r < 200.0 } { set r [expr { $r + $rstep }] } {
-		for {set theta 0.0} {$theta <= 360.0} {set theta [expr { $theta + $thestep }]} {
+		for {set theta $thestep} {$theta <= 360.0} {set theta [expr { $theta + $thestep }]} {
 			set angleul($r,$theta) 0.0
 			set anglell($r,$theta) 0.0
 			set nterm1($r,$theta) 0
@@ -2105,6 +2107,7 @@ proc curvature { crd prmtop xcom ycom zcom avg_bx avg_by start_frame end_frame s
 	set vi 0
 	for {set i $start_frame} {$i < $end_frame} {incr i $step} {
 		set v [open "$vi.txt" "w"]
+		puts $v "#radius	theta	curvature_UL	curvature_LL"
 		for { set r $sstep } { $r <= $tsteps } { set r [expr { $r + $rstep }] } {
 			for {set theta $thestep} {$theta <= 360.0} {set theta [expr { $theta + $thestep }]} {
 				puts $v "$r	$theta	$sdangleul($i,$r,$theta)	$sdanglell($i,$r,$theta)"
@@ -3607,11 +3610,12 @@ proc pp {prmtop crd xori yori zori start_frame end_frame step start_res end_res 
 
 		# FOR A VIDEO
 
-		exec mkdir -p video_files
+		exec mkdir -p video_files_PP
 
 		set vi 0
 		for {set fr $start_frame} {$fr < $end_frame} {incr fr $step} {
 			set v [open "$vi" "w"]
+			puts $v "#R theta	z	gp1	gp2	gp3	gp4	gp5"
 			set o 0
 			for {set zd $zstart} {$zd <= $up31} {set zd [expr { $zd + $zstep }]} {
 				set m 0
@@ -3640,9 +3644,11 @@ proc pp {prmtop crd xori yori zori start_frame end_frame step start_res end_res 
 			close $f
 
 			set go [open "$i.txt" "w"]
+			puts $go "#R theta	z	gp1	gp2	gp3	gp4	gp5"
 			set ho [open "avg_$i.txt" "w"]
+			puts $ho "#R theta	amino_acids"
 
-			set k 0
+			set k 8
 
 			while { $k < [llength $data] } {
 				set t1 [lindex $data $k]
@@ -3662,9 +3668,9 @@ proc pp {prmtop crd xori yori zori start_frame end_frame step start_res end_res 
 			}
 			close $go
 			close $ho
-			exec mv $i ./video_files
-			exec mv $i.txt ./video_files
-			exec mv avg_$i.txt ./video_files
+			exec mv $i ./video_files_PP
+			exec mv $i.txt ./video_files_PP
+			exec mv avg_$i.txt ./video_files_PP
 		}
 	}	
 }	
@@ -4100,6 +4106,7 @@ proc wat_prof {prmtop crd xcom ycom zcom start_frame end_frame step sstep tsteps
 	for {set zd $zstart} {$zd <= $up31} {set zd [expr { $zd + $zstep }]} {
 		set zdn [format "%.0f" "$zd"]
 		set v [open "z_$zdn.txt" "w"]
+		puts $v "#r	theta	slice_pos	number_of water_molecules"
 		set m 0
 		for {set r $sstep} {$r <= $tsteps} {set r [expr { $r + $rstep }]} {
 			set n 0
@@ -4124,6 +4131,7 @@ proc wat_prof {prmtop crd xcom ycom zcom start_frame end_frame step sstep tsteps
 		for {set zd $zstart} {$zd <= $up31} {set zd [expr { $zd + $zstep }]} {
 			set zdn [format "%.0f" "$zd"]
 			set v1 [open "frame_$zdn.$o.txt" "w"]
+			puts $v1 "#r	theta	slice_pos	number_of water_molecules"
 			set m 0
 			for {set r $sstep} {$r <= $tsteps} {set r [expr { $r + $rstep }]} {
 				set n 0
