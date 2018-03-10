@@ -2086,12 +2086,12 @@ proc curvature { crd prmtop xcom ycom zcom avg_bx avg_by start_frame end_frame s
 			if { $nterm1($r,$theta) > 0 } {
 				set angleul($r,$theta) [expr { $angleul($r,$theta) / $nterm1($r,$theta) }]
 			} else {
-				set angleul($r,$theta) "--"
+				set angleul($r,$theta) "-1"
 			}
 			if { $nterm2($r,$theta) > 0 } {
 				set anglell($r,$theta) [expr { $anglell($r,$theta) / $nterm2($r,$theta) }]
 			} else {
-				set anglell($r,$theta) "-"
+				set anglell($r,$theta) "-1"
 			}
 			puts $f1 "$r	$theta	$angleul($r,$theta)	$anglell($r,$theta)"
 		}
