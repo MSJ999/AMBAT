@@ -1,11 +1,18 @@
   •••• SHORT INSTRUCTIONS FOR AMBAT ANALYSIS TOOL ••••
 
  Files in this folder:
+
     initial_coord.inpcrd : AMBER based initial coordinate file for a lipid bilayer-protein system
+
     parm.prmtop : AMBER based parameters file
+
     traj.nc : AMBER based trajectory file
+
     AMBAT_AT_instructions.pdf : Intructions for running AMBAT_AT code
+
     contrast_map_AMBAT_AT.py : python script for plotting contrast map
+
     line_plots_AMBAT_AT.py : python script for plotting line plots
+
     AMBAT_AT.tcl : AMBAT analysis tool code
     
