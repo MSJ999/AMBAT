@@ -751,7 +751,8 @@ proc lipid_bilayer {} {
 				if { $ij1 == $l_ul(0) && $ij2 == [expr { [expr { $l_ul(0) + $l_ul(1) }] }] && $ij3 == [expr { $l_ul(0) + $l_ul(1) + $l_ul(2) }] && $ij4 == [expr { $l_ul(0) + $l_ul(1) + $l_ul(2) + $l_ul(3) }] && $ij5 == [expr { $l_ul(0) + $l_ul(1) + $l_ul(2) + $l_ul(3) + $l_ul(4) }] && $ij6 == [expr { $l_ul(0) + $l_ul(1) + $l_ul(2) + $l_ul(3) + $l_ul(4) + $l_ul(5) }] && $ij7 == [expr { $l_ul(0) + $l_ul(1) + $l_ul(2) + $l_ul(3) + $l_ul(4) + $l_ul(5) + $l_ul(6)}]  && $ij8 == [expr { $l_ul(0) + $l_ul(1) + $l_ul(2) + $l_ul(3) + $l_ul(4) + $l_ul(5) + $l_ul(6) + $l_ul(7) }]} {
 					set j [expr { $j + $stepy }] 
 				} else { 
-					if { $pointer <= $div } {
+					set div1 [expr { $l_ul(0) / $num_lipids_ul }]
+					if { $pointer <= $div1 } {
 						if { $ij1 < $l_ul(0) } {
 							set x_xy($ij1) $i 
 							set y_xy($ij1) $j
@@ -760,9 +761,10 @@ proc lipid_bilayer {} {
 							set j [expr { $j - $stepy }]
 						}
 					}
-
+				
 					if { [expr { 2 * $div }] <= 1.0 } {
-						if { $pointer > $div && $pointer <= [expr { 2 * $div }] } {
+						set div2 [expr { $l_ul(1) / $num_lipids_ul }]
+						if { $pointer > $div1 && $pointer <= [expr { $div1 + $div2 }]} {
 							if { $ij2 < [expr { $l_ul(0) + $l_ul(1) }] } {
 								set x_xy($ij2) $i
 								set y_xy($ij2) $j
@@ -774,7 +776,8 @@ proc lipid_bilayer {} {
 					}
 
 					if { [expr { 3 * $div }] <= 1.0 } {
-						if { $pointer > [expr { 2 * $div }] && $pointer <= [expr { 3 * $div }] } {
+						set div3 [expr { $l_ul(2) / $num_lipids_ul }]
+						if { $pointer > [expr { $div1 + $div2 }] && $pointer <= [expr { $div1 + $div2 + $div3 }] } {
 							if { $ij3 < [expr { $l_ul(0) + $l_ul(1) + $l_ul(2) }] } {
 								set x_xy($ij3) $i
 								set y_xy($ij3) $j
@@ -786,7 +789,8 @@ proc lipid_bilayer {} {
 					}
 
 					if { [expr { 4 * $div }] <= 1.0 } {
-						if { $pointer > [expr { 3 * $div }] && $pointer <= [expr { 4 * $div }] } {
+						set div4 [expr { $l_ul(3) / $num_lipids_ul }]
+						if { $pointer > [expr { $div1 + $div2 + $div3 }] && $pointer <= [expr { $div1 + $div2 + $div3 + $div4 }] } {
 							if { $ij4 < [expr { $l_ul(0) + $l_ul(1) + $l_ul(2) + $l_ul(3) }] } {
 								set x_xy($ij4) $i
 								set y_xy($ij4) $j
@@ -798,7 +802,8 @@ proc lipid_bilayer {} {
 					}
 
 					if { [expr { 5 * $div }] <= 1.0 } {
-						if { $pointer > [expr { 4 * $div }] && $pointer <= [expr { 5 * $div }] } {
+						set div5 [expr { $l_ul(4) / $num_lipids_ul }]
+						if { $pointer > [expr { $div1 + $div2 + $div3 + $div4 }] && $pointer <= [expr { $div1 + $div2 + $div3 + $div4 + $div5 }] } {
 							if { $ij5 < [expr { $l_ul(0) + $l_ul(1) + $l_ul(2) + $l_ul(3) + $l_ul(4) }] } {
 								set x_xy($ij5) $i
 								set y_xy($ij5) $j
@@ -810,7 +815,8 @@ proc lipid_bilayer {} {
 					}
 
 					if { [expr { 6 * $div }] <= 1.0 } {
-						if { $pointer > [expr { 5 * $div }] && $pointer <= [expr { 6 * $div }] } {
+						set div6 [expr { $l_ul(5) / $num_lipids_ul }]
+						if { $pointer > [expr { $div1 + $div2 + $div3 + $div4 + $div5}] && $pointer <= [expr { $div1 + $div2 + $div3 + $div4 + $div5 + $div6 }] } {
 							if { $ij6 < [expr { $l_ul(0) + $l_ul(1) + $l_ul(2) + $l_ul(3) + $l_ul(4) + $l_ul(5) }] } {
 								set x_xy($ij6) $i
 								set y_xy($ij6) $j
@@ -822,7 +828,8 @@ proc lipid_bilayer {} {
 					}
 
 					if { [expr { 7 * $div }] <= 1.0 } {
-						if { $pointer > [expr { 6 * $div }] && $pointer <= [expr { 7 * $div }] } {
+						set div7 [expr { $l_ul(6) / $num_lipids_ul }]
+						if { $pointer > [expr { $div1 + $div2 + $div3 + $div4 + $div5 + $div6}] && $pointer <= [expr { $div1 + $div2 + $div3 + $div4 + $div5 + $div6 + $div7 }] } {
 							if { $ij7 < [expr { $l_ul(0) + $l_ul(1) + $l_ul(2) + $l_ul(3) + $l_ul(4) + $l_ul(5) + $l_ul(6) }] } {
 								set x_xy($ij7) $i
 								set y_xy($ij7) $j
@@ -834,7 +841,8 @@ proc lipid_bilayer {} {
 					}
 
 					if { [expr { 8 * $div }] <= 1.0 } {
-						if { $pointer > [expr { 7 * $div }] && $pointer <= [expr { 8 * $div }] } {
+						set div8 [expr { $l_ul(7) / $num_lipids_ul }]
+						if { $pointer > [expr { $div1 + $div2 + $div3 + $div4 + $div5 + $div6 + $div7 }] && $pointer <= [expr { $div1 + $div2 + $div3 + $div4 + $div5 + $div6 + $div7 + $div8 }] } {
 							if { $ij8 < [expr { $l_ul(0) + $l_ul(1) + $l_ul(2) + $l_ul(3) + $l_ul(4) + $l_ul(5) + $l_ul(6) + $l_ul(7)}] } {
 								set x_xy($ij8) $i
 								set y_xy($ij8) $j
@@ -869,7 +877,8 @@ proc lipid_bilayer {} {
 				if { $ij1 == $l_ll(0) && $ij2 == [expr { [expr { $l_ll(0) + $l_ll(1) }] }] && $ij3 == [expr { $l_ll(0) + $l_ll(1) + $l_ll(2) }] && $ij4 == [expr { $l_ll(0) + $l_ll(1) + $l_ll(2) + $l_ll(3) }] && $ij5 == [expr { $l_ll(0) + $l_ll(1) + $l_ll(2) + $l_ll(3) + $l_ll(4) }] && $ij6 == [expr { $l_ll(0) + $l_ll(1) + $l_ll(2) + $l_ll(3) + $l_ll(4) + $l_ll(5) }] && $ij7 == [expr { $l_ll(0) + $l_ll(1) + $l_ll(2) + $l_ll(3) + $l_ll(4) + $l_ll(5) + $l_ll(6)}]  && $ij8 == [expr { $l_ll(0) + $l_ll(1) + $l_ll(2) + $l_ll(3) + $l_ll(4) + $l_ll(5) + $l_ll(6) + $l_ll(7) }]} {
 					set j [expr { $j + $stepy }] 
 				} else {
-					if { $pointer <= $div } {
+					set div1 [expr { $l_ll(0) / $num_lipids_ll }]
+					if { $pointer <= $div1 } {
 						if { $ij1 < $l_ll(0) } {
 							set x_xy_l($ij1) $i 
 							set y_xy_l($ij1) $j
@@ -880,7 +889,8 @@ proc lipid_bilayer {} {
 					}
 
 					if { [expr { 2 * $div }] <= 1.0 } {
-						if { $pointer > $div && $pointer <= [expr { 2 * $div }] } {
+						set div2 [expr { $l_ll(1) / $num_lipids_ll }]
+						if { $pointer > [expr { $div1 }] && $pointer <= [expr { $div1 + $div2 }] } {
 							if { $ij2 < [expr { $l_ll(1) + $l_ll(0) }] } {
 								set x_xy_l($ij2) $i
 								set y_xy_l($ij2) $j
@@ -892,7 +902,8 @@ proc lipid_bilayer {} {
 					}
 
 					if { [expr { 3 * $div }] <= 1.0 } {
-						if { $pointer > [expr { 2 * $div }] && $pointer <= [expr { 3 * $div }] } {
+						set div3 [expr { $l_ll(2) / $num_lipids_ll }]
+						if { $pointer > [expr { $div1 + $div2 }] && $pointer <= [expr { $div1 + $div2 + $div3 }] } {
 							if { $ij3 < [expr { $l_ll(0) + $l_ll(1) + $l_ll(2) }] } {
 								set x_xy_l($ij3) $i
 								set y_xy_l($ij3) $j
@@ -904,7 +915,8 @@ proc lipid_bilayer {} {
 					}
 
 					if { [expr { 4 * $div }] <= 1.0 } {
-						if { $pointer > [expr { 3 * $div }] && $pointer <= [expr { 4 * $div }] } {
+						set div4 [expr { $l_ll(3) / $num_lipids_ll }]
+						if { $pointer > [expr { $div1 + $div2 + $div3 }] && $pointer <= [expr { $div1 + $div2 + $div3 + $div4 }] } {
 							if { $ij4 < [expr { $l_ll(0) + $l_ll(1) + $l_ll(2) + $l_ll(3) }] } {
 								set x_xy_l($ij4) $i
 								set y_xy_l($ij4) $j
@@ -916,7 +928,8 @@ proc lipid_bilayer {} {
 					}
 
 					if { [expr { 5 * $div }] <= 1.0 } {
-						if { $pointer > [expr { 4 * $div }] && $pointer <= [expr { 5 * $div }] } {
+						set div5 [expr { $l_ll(4) / $num_lipids_ll }]
+						if { $pointer > [expr { $div1 + $div2 + $div3 + $div4 }] && $pointer <= [expr { $div1 + $div2 + $div3 + $div4 + $div5 }] } {
 							if { $ij5 < [expr { $l_ll(0) + $l_ll(1) + $l_ll(2) + $l_ll(3) + $l_ll(4) }] } {
 								set x_xy_l($ij5) $i
 								set y_xy_l($ij5) $j
@@ -928,7 +941,8 @@ proc lipid_bilayer {} {
 					}
 
 					if { [expr { 6 * $div }] <= 1.0 } {
-						if { $pointer > [expr { 5 * $div }] && $pointer <= [expr { 6 * $div }] } {
+						set div6 [expr { $l_ll(5) / $num_lipids_ll }]
+						if { $pointer > [expr { $div1 + $div2 + $div3 + $div4 + $div5 }] && $pointer <= [expr { $div1 + $div2 + $div3 + $div4 + $div5 + $div6 }] } {
 							if { $ij6 < [expr { $l_ll(0) + $l_ll(1) + $l_ll(2) + $l_ll(3) + $l_ll(4) + $l_ll(5) }] } {
 								set x_xy_l($ij6) $i
 								set y_xy_l($ij6) $j
@@ -940,7 +954,8 @@ proc lipid_bilayer {} {
 					}
 
 					if { [expr { 7 * $div }] <= 1.0 } {
-						if { $pointer > [expr { 6 * $div }] && $pointer <= [expr { 7 * $div }] } {
+						set div7 [expr { $l_ll(6) / $num_lipids_ll }]
+						if { $pointer > [expr { $div1 + $div2 + $div3 + $div4 + $div5 + $div6 }] && $pointer <= [expr { $div1 + $div2 + $div3 + $div4 + $div5 + $div6 + $div7 }] } {
 							if { $ij7 < [expr { $l_ll(0) + $l_ll(1) + $l_ll(2) + $l_ll(3) + $l_ll(4) + $l_ll(5) + $l_ll(6) }] } {
 								set x_xy_l($ij7) $i
 								set y_xy_l($ij7) $j
@@ -952,7 +967,8 @@ proc lipid_bilayer {} {
 					}
 
 					if { [expr { 8 * $div }] <= 1.0 } {
-						if { $pointer > [expr { 7 * $div }] && $pointer <= [expr { 8 * $div }] } {
+						set div8 [expr { $l_ll(7) / $num_lipids_ll }]
+						if { $pointer > [expr { $div1 + $div2 + $div3 + $div4 + $div5 + $div6 + $div7 }] && $pointer <= [expr { $div1 + $div2 + $div3 + $div4 + $div5 + $div6 + $div7 + $div8 }] } {
 							if { $ij8 < [expr { $l_ll(0) + $l_ll(1) + $l_ll(2) + $l_ll(3) + $l_ll(4) + $l_ll(5) + $l_ll(6) + $l_ll(7)}] } {
 								set x_xy_l($ij8) $i
 								set y_xy_l($ij8) $j
@@ -10252,7 +10268,10 @@ DMPC
 DLPE
 { {A} { {0.0 0.0 0.3} } { {0.0 0.0 0.3} } { {0.0 0.0 0.0} } }
 { {A} { {0.0 0.0 1.1} } { {0.0 0.0 1.1} } { {0.0 0.0 0.0} } }
-}  
+CHL
+{ {A} { {0.0 0.0 0.0} } { {0.0 0.0 0.0} } { {0.0 0.0 0.0} } }
+{ {A} { {0.0 0.0 0.0} } { {0.0 0.0 0.0} } { {0.0 0.0 0.0} } }
+}    
 
 	set f [open "grid" "w"]
 	
