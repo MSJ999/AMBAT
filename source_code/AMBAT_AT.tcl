@@ -9,6 +9,7 @@ proc execution {} {
 	puts "	DEVELOPED BY TARUN KHANNA, Dr. IAN GOULD"
 	puts "	IMPERIAL COLLEGE LONDON, U.K."	
 	puts ""
+	puts "	FUNDED BY: EUROPEAN UNION FP7 PROGRAMME"
 	puts ""
 	puts "	FOR DOCUMENTATION OF THE CODE SEE :"
 	puts ""

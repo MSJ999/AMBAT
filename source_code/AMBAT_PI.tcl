@@ -12,6 +12,7 @@ proc execution_pi {tx ty} {
 	puts ""
 	puts "	DEVELOPED BY TARUN KHANNA AND DR. IAN GOULD"
 	puts "	IMPERIAL COLLEGE LONDON, U.K."
+	puts "	FUNDED BY: EUROPEAN UNION FP7 PROGRAMME"
 	
 	puts ""
 	puts "			#### ENTER THE NAME OF THE PDB ####"
