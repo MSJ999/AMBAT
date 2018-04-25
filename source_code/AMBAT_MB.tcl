@@ -5643,7 +5643,13 @@ proc mem_builder {} {
 	puts ""
 	puts "	DEVELOPED BY TARUN KHANNA AND DR. IAN GOULD"
 	puts "	IMPERIAL COLLEGE LONDON, U.K."
-	puts "	FUNDED BY: EUROPEAN UNION FP7 PROGRAMME"
+	puts ""
+	puts "	**********************************************************"
+	puts "	The research leading to AMBAT has received funding from" 
+	puts "	the People Programme (Marie Curie Actions) of the European" 
+	puts "	Union’s	Seventh Framework Programme (FP7/2007-2013) " 
+	puts "	under REA grant agreement no 607466."
+	puts "	**********************************************************"
 
 
 	# PARAMETERS 

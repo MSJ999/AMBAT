@@ -7,9 +7,6 @@
     
     Corresponding email: tarun.khanna@imperial.ac.uk
 
-
- AMBAT stands for Amber Memnbrane Builder and Analysis Tool
-
  This software is distributed as two separate scripts and one separate protein insertion script (present in the folder 'source_code'):
 
     AMBAT_MB.tcl : Membrane Builder
@@ -23,3 +20,11 @@
  NOTE: AMBAT FULLY SUPPORT THE PROTEIN PDB's FROM OPM DATABASE AND LIPID BILAYER BUILD THROUGH CHARMM-GUI AND CONVERTED INTO AMBER FORMAT.
 
  Manuscript for AMBAT is currently in the latter stages of preparation.
+
+**************************************************************
+	The research leading to AMBAT has received funding from
+	the People Programme (Marie Curie Actions) of the European
+	Union’s	Seventh Framework Programme (FP7/2007-2013)
+	under REA grant agreement no 607466.
+**************************************************************
+
