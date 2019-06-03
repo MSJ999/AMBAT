@@ -12753,7 +12753,8 @@ proc pi { con inppdb inp1 inp2 inp3 inp4 inp5 inp6} {
 			}
 
 			if { $shift3 != 0 } {
-				set tcoord [list $corx $cory $z1] 
+
+				set tcoord [list $corx $cory $corz] 
 		
 				# TRANSFORMATION 1
 
@@ -12781,10 +12782,13 @@ proc pi { con inppdb inp1 inp2 inp3 inp4 inp5 inp6} {
 				set sx1 [string length $x1]
 
 				set y1 [format "%.3f" [expr { [lindex $dvar 1] - $yori + $ytrans }]]
-				set sy1 8
-	
-				set x1 $x1$y1
-				set y1 ""
+				set sy1 [string length $y1]
+
+				if { $sy1 > 7 } {
+					set x1 $x1$y1
+					set y1 ""
+					set sy1 8
+				}
 
 				set z1 [format "%.3f" [expr { [lindex $dvar 2] - $zori + $ztrans }]]
 				set sz1 [string length $z1]
@@ -12822,10 +12826,14 @@ proc pi { con inppdb inp1 inp2 inp3 inp4 inp5 inp6} {
 				set sy1 [string length $y1]
 
 				set z1 [format "%.3f" [expr { [lindex $dvar 2] - $zori + $ztrans }]]
-				set sz1 9
+				set sz1 [string length $z1]				
 
-				set y1 $y1$z1
-				set z1 ""
+				if { $sz1 > 7 } {:
+					set y1 $y1$z1
+					set z1 ""
+					set sz1 9
+				}
+
 			}
 		
 			puts $h "$ft$p1($srn1)$rn1 $ic($sat1)$at1$sat($sat1)$p($sresn)$resn $cn$p($san1)$an1    $c($sx1)$x1$c($sy1)$y1$c($sz1)$z1  1.00  0.00           [lindex $data1 [expr { $k + 11 - $shift - $shift1 - $shift2 - $shift3 - $shift4 - $shift5 }]]"
