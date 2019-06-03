@@ -12753,7 +12753,7 @@ proc pi { con inppdb inp1 inp2 inp3 inp4 inp5 inp6} {
 			}
 
 			if { $shift3 != 0 } {
-				set tcoord [list $corx $cory $z] 
+				set tcoord [list $corx $cory $z1] 
 		
 				# TRANSFORMATION 1
 
@@ -12791,7 +12791,7 @@ proc pi { con inppdb inp1 inp2 inp3 inp4 inp5 inp6} {
 			}
 
 			if { $shift4 != 0 } {
-				set tcoord [list $x $cory $corz] 
+				set tcoord [list $x1 $cory $corz] 
 		
 				# TRANSFORMATION 1
 
