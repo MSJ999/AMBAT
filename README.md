@@ -53,13 +53,13 @@
 	NOTE: AMBAT FULLY SUPPORT THE PROTEIN PDB FILES FROM OPM DATABASE AND LIPID BILAYER BUILD THROUGH CHARMM-GUI AND CONVERTED INTO AMBER FORMAT.
 </h3>
 
-**************************************************************
+*************************************************************
 
 TO DOWNLOAD THE WHOLE PACKAGE
 
 git clone https://github.com/tarunkhanna1112/AMBAT.git
 
-**************************************************************
+*************************************************************
 
 **************************************************************
  The research leading to AMBAT has received funding from
