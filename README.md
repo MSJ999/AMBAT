@@ -30,7 +30,7 @@
 		AMBAT Membrane Builder
 	</h2>
 	<p>
-		<img src="/images/MB.png" width="100%" title="Vesicles">
+		<img src="/images/MB.png" width="100%">
 	</p>
 	<h2> 
 		AMBAT Analysis Tool
