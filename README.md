@@ -58,6 +58,9 @@
 TO DOWNLOAD THE WHOLE PACKAGE
 
 git clone https://github.com/tarunkhanna1112/AMBAT.git
+OR CHECK
+AmberTools 
+https://ambermd.org/AmberTools.php
 
 *************************************************************
 
